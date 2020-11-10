@@ -6,7 +6,7 @@
 KERNELVERSION="$(uname -r)"
 MODULEPATH="/lib/modules/${KERNELVERSION}/kernel/drivers/media/video"
 MODULEFILE="v4l2loopback-dc.ko"
-TMPDIR=~/tmp
+TMPDIR="$XDG_RUNTIME_DIR/tmp"
 UNZIPDIR=${TMPDIR}/droidcam
 
 # Running in debug mode? (argument `-d' was passed?)
@@ -22,7 +22,7 @@ else
 fi
 
 # Does the module exist already?
-test -f ${MODULEPATH}/${MODULEFILE} && echo "Nothing to do, exiting now." > $DEBUGOUT && exit 0
+test -f ${MODULEPATH}/${MODULEFILE} && echo "Module exists already at ${MODULEPATH}/${MODULEFILE}. Exiting now." && exit 0
 
 # Module does not exist.
 # 1. Download it

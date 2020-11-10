@@ -32,8 +32,8 @@ DOWNLOADDIR=~/Downloads
 DOWNLOADCMD="wget -P ${DOWNLOADDIR} ${DOWNLOADURL}"
 test -f ${DOWNLOADDIR}/${DOWNLOADFILE} || $DOWNLOADCMD
 
-# 2. Test file integrity
-echo "73db3a4c0f52a285b6ac1f8c43d5b4c7 ${DOWNLOADDIR}/${DOWNLOADFILE}" | md5sum -c --
+# 2. Test file integrity -- no more since 2020-11-10 or earlier
+#echo "73db3a4c0f52a285b6ac1f8c43d5b4c7 ${DOWNLOADDIR}/${DOWNLOADFILE}" | md5sum -c --
 
 # 3. unzip it
 unzip ${DOWNLOADDIR}/${DOWNLOADFILE} -d ${UNZIPDIR}

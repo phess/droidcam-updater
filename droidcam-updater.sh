@@ -28,15 +28,19 @@ test -f ${MODULEPATH}/${MODULEFILE} && echo "Module exists already at ${MODULEPA
 # 1. Download it
 DOWNLOADURL="https://files.dev47apps.net/linux/droidcam_latest.zip"
 DOWNLOADFILE="droidcam_latest.zip"
-DOWNLOADDIR=~/Downloads
-DOWNLOADCMD="wget -P ${DOWNLOADDIR} ${DOWNLOADURL}"
-test -f ${DOWNLOADDIR}/${DOWNLOADFILE} || $DOWNLOADCMD
+mkdir -v -p "${TMPDIR}" > $DEBUGOUT
+DOWNLOADCMD="wget -P ${TMPDIR} ${DOWNLOADURL}"
+test -f ${TMPDIR}/${DOWNLOADFILE} || $DOWNLOADCMD
 
 # 2. Test file integrity -- no more since 2020-11-10 or earlier
 #echo "73db3a4c0f52a285b6ac1f8c43d5b4c7 ${DOWNLOADDIR}/${DOWNLOADFILE}" | md5sum -c --
 
+# 2. Are the necessary packages installed? Install them if not
+echo "Checking if all required packages are installed. I will install them if necessary."
+rpm -q "kernel-headers-$(uname -r)" && rpm -q "gcc" && rpm -q "make" &>/dev/null || sudo dnf -y install "kernel-headers-$(uname -r)" gcc make || exit 6
+
 # 3. unzip it
-unzip ${DOWNLOADDIR}/${DOWNLOADFILE} -d ${UNZIPDIR}
+unzip ${TMPDIR}/${DOWNLOADFILE} -d ${UNZIPDIR}
 
 # 4. cd into $UNZIPDIR and compile/install it
 ( cd ${UNZIPDIR} && sudo ./install )
